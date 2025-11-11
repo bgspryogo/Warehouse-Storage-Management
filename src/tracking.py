@@ -1,11 +1,15 @@
+from src.db import fetch_all_items
+
 class Tracking:
-    def __init__(self, items):
-        self.items = items
+    def __init__(self):
+        pass
 
     def show_items(self):
         print("\n=== Daftar Barang ===")
-        if not self.items:   #if statement digunakan untuk mengetahui apakah pada object "self" terdapat data atau tidak
+        items = fetch_all_items()
+        if not items:
             print("Belum ada barang.")
             return
-        for item in self.items:  #for digunakan untuk menunjukkan data yang terdapat di dalam object "self"
-            print(f"{item.code} | {item.name} | Stok: {item.quantity}")
+
+        for code, name, qty in items:
+            print(f"{code} | {name} | Stok: {qty}")

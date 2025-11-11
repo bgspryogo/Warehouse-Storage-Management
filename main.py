@@ -1,24 +1,34 @@
+import os
 from src import InputOutput
-from src.tracking import Tracking
+from src import Tracking
+from init_db import init_db
+from src.db import fetch_all_items
+
+DB_PATH = os.path.join('data', 'warehouse.db')
+
+# Automatically initialize DB if it doesn't exist
+if not os.path.exists(DB_PATH):
+    init_db()
 
 def main():
     io = InputOutput()
-    while True: #while True digunakan agar program terus berjalan setelah selesai melakukan suatu tindakan
-        print("=== Warehouse Storage Management ===")
+
+    while True:
+        print("\n=== Warehouse Storage Management ===")
         print("1. Input barang")
         print("2. Output barang")
         print("3. Lihat stok")
         print("4. Keluar")
-        print("Choose option")
+        choice = input("Choose option: ")
 
-        choice = (input(""))
-
-        if choice == "1": #if else statement digunakan sebagai selector untuk memilih tindakan
+        if choice == "1":
             io.input_item()
         elif choice == "2":
             io.output_item()
         elif choice == "3":
-            tracker = Tracking(io.items)
+            # fetch items from database
+            items = fetch_all_items()
+            tracker = Tracking()
             tracker.show_items()
         elif choice == "4":
             print("Keluar dari program.")
