@@ -1,10 +1,11 @@
 import os
 from src import InputOutput
 from src import Tracking
+from src.utils import export_db_to_csv
 from init_db import init_db
 from src.db import fetch_all_items
 
-DB_PATH = os.path.join('data', 'warehouse.db')
+DB_PATH = os.path.join('data', 'database.db')
 
 # Automatically initialize DB if it doesn't exist
 if not os.path.exists(DB_PATH):

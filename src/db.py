@@ -9,10 +9,11 @@ def get_connection():
 def fetch_all_items():
     connection = get_connection()
     cursor = connection.cursor()
-    cursor.execute("SELECT code, name, quantity FROM inventory")
+    cursor.execute("SELECT code, name, quantity FROM inventory WHERE quantity > 0")
     rows = cursor.fetchall()
     connection.close()
-    return rows  # list of tuples
+    return rows
+
 
 def add_item(code, name, quantity):
     connection = get_connection()
@@ -22,10 +23,15 @@ def add_item(code, name, quantity):
     connection.commit()
     connection.close()
 
-
 def update_quantity(code, quantity):
     connection = get_connection()
     cursor = connection.cursor()
-    cursor.execute("UPDATE inventory SET quantity=? WHERE code=?", (quantity, code))
+
+    if quantity > 0:
+        cursor.execute("UPDATE inventory SET quantity=? WHERE code=?", (quantity, code))
+    else:
+        # Delete the item if quantity <= 0
+        cursor.execute("DELETE FROM inventory WHERE code=?", (code,))
+
     connection.commit()
     connection.close()
